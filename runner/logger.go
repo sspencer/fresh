@@ -25,13 +25,7 @@ func newLogFunc(prefix string) func(string, ...interface{}) {
 		timeString := fmt.Sprintf("%d:%d:%02d", now.Hour(), now.Minute(), now.Second())
 		format = fmt.Sprintf("%s%s %s |%s %s", color, timeString, prefix, clear, format)
 
-		if len(v) == 0 {
-			// URLs may has percent signs, so go thru Print when there
-			// are no extra args
-			logger.Print(format)
-		} else {
-			logger.Printf(format, v...)
-		}
+		logger.Printf(format, v...)
 	}
 }
 
@@ -42,7 +36,7 @@ func fatal(err error) {
 type appLogWriter struct{}
 
 func (a appLogWriter) Write(p []byte) (n int, err error) {
-	appLog(string(p))
+	appLog("%s", string(p))
 
 	return len(p), nil
 }
